@@ -1,0 +1,113 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.Scanner;
+
+public class URLShortenerService {
+
+    // Map to store short URL -> original URL
+    private static Map<String, String> urlDatabase = new HashMap<>();
+
+    // Characters for short code generation
+    private static final String CHARACTERS =
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    private static final int SHORT_URL_LENGTH = 6;
+
+    // Method to generate random short code
+    public static String generateShortCode() {
+        Random random = new Random();
+        StringBuilder shortCode = new StringBuilder();
+
+        for (int i = 0; i < SHORT_URL_LENGTH; i++) {
+            int index = random.nextInt(CHARACTERS.length());
+            shortCode.append(CHARACTERS.charAt(index));
+        }
+
+        return shortCode.toString();
+    }
+
+    // Method to shorten URL
+    public static String shortenURL(String originalURL) {
+
+        String shortCode;
+
+        // Ensure unique short code
+        do {
+            shortCode = generateShortCode();
+        } while (urlDatabase.containsKey(shortCode));
+
+        // Store mapping
+        urlDatabase.put(shortCode, originalURL);
+
+        return shortCode;
+    }
+
+    // Method to get original URL
+    public static String getOriginalURL(String shortCode) {
+        return urlDatabase.get(shortCode);
+    }
+
+    // Main Method
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+
+            System.out.println("\n===== URL Shortener Service =====");
+            System.out.println("1. Shorten URL");
+            System.out.println("2. Redirect to Original URL");
+            System.out.println("3. Show All URLs");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+
+                case 1:
+                    System.out.print("Enter Long URL: ");
+                    String longURL = sc.nextLine();
+
+                    String shortCode = shortenURL(longURL);
+
+                    System.out.println("Short URL: http://short.ly/" + shortCode);
+                    break;
+
+                case 2:
+                    System.out.print("Enter Short Code: ");
+                    String code = sc.nextLine();
+
+                    String originalURL = getOriginalURL(code);
+
+                    if (originalURL != null) {
+                        System.out.println("Redirecting to: " + originalURL);
+                    } else {
+                        System.out.println("URL not found!");
+                    }
+                    break;
+
+                case 3:
+                    System.out.println("\nStored URLs:");
+                    for (Map.Entry<String, String> entry : urlDatabase.entrySet()) {
+                        System.out.println(
+                                "http://short.ly/" + entry.getKey()
+                                        + " --> "
+                                        + entry.getValue()
+                        );
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Exiting...");
+                    sc.close();
+                    System.exit(0);
+
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
+    }
+}
