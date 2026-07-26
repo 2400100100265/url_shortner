@@ -1,113 +1,250 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Scanner;
+ # 🔗 URL Shortener Service
 
-public class URLShortenerService {
+A simple **Java Console-Based URL Shortener Service** that converts long URLs into short, shareable links. The application uses a random short-code generation system and stores URL mappings using Java Collections.
 
-    // Map to store short URL -> original URL
-    private static Map<String, String> urlDatabase = new HashMap<>();
+---
 
-    // Characters for short code generation
-    private static final String CHARACTERS =
-            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+## ✨ Features
 
-    private static final int SHORT_URL_LENGTH = 6;
+- 🔗 Convert Long URLs into Short URLs
+- 🚀 Redirect Short URLs to Original URLs
+- 🔐 Unique Short Code Generation
+- 📋 View All Stored URL Mappings
+- ⚡ Fast URL Lookup Using HashMap
+- 🖥️ Console-Based User Interface
 
-    // Method to generate random short code
-    public static String generateShortCode() {
-        Random random = new Random();
-        StringBuilder shortCode = new StringBuilder();
+---
 
-        for (int i = 0; i < SHORT_URL_LENGTH; i++) {
-            int index = random.nextInt(CHARACTERS.length());
-            shortCode.append(CHARACTERS.charAt(index));
-        }
+## 🛠️ Technologies Used
 
-        return shortCode.toString();
-    }
+- Java
+- HashMap Collection Framework
+- Random Class
+- StringBuilder
+- Scanner Class
 
-    // Method to shorten URL
-    public static String shortenURL(String originalURL) {
+---
 
-        String shortCode;
+## 📂 Project Structure
 
-        // Ensure unique short code
-        do {
-            shortCode = generateShortCode();
-        } while (urlDatabase.containsKey(shortCode));
+```
+URL-Shortener-Service/
+│
+├── URLShortenerService.java
+└── README.md
+```
 
-        // Store mapping
-        urlDatabase.put(shortCode, originalURL);
+---
 
-        return shortCode;
-    }
+## 🚀 Getting Started
 
-    // Method to get original URL
-    public static String getOriginalURL(String shortCode) {
-        return urlDatabase.get(shortCode);
-    }
+### 1. Clone the Repository
 
-    // Main Method
-    public static void main(String[] args) {
+```bash
+git clone https://github.com/your-username/url-shortener-service.git
+```
 
-        Scanner sc = new Scanner(System.in);
+### 2. Navigate to Project Folder
 
-        while (true) {
+```bash
+cd url-shortener-service
+```
 
-            System.out.println("\n===== URL Shortener Service =====");
-            System.out.println("1. Shorten URL");
-            System.out.println("2. Redirect to Original URL");
-            System.out.println("3. Show All URLs");
-            System.out.println("4. Exit");
-            System.out.print("Enter your choice: ");
+### 3. Compile the Program
 
-            int choice = sc.nextInt();
-            sc.nextLine();
+```bash
+javac URLShortenerService.java
+```
 
-            switch (choice) {
+### 4. Run the Application
 
-                case 1:
-                    System.out.print("Enter Long URL: ");
-                    String longURL = sc.nextLine();
+```bash
+java URLShortenerService
+```
 
-                    String shortCode = shortenURL(longURL);
+---
 
-                    System.out.println("Short URL: http://short.ly/" + shortCode);
-                    break;
+## 📋 Application Menu
 
-                case 2:
-                    System.out.print("Enter Short Code: ");
-                    String code = sc.nextLine();
+```
+===== URL Shortener Service =====
 
-                    String originalURL = getOriginalURL(code);
+1. Shorten URL
+2. Redirect to Original URL
+3. Show All URLs
+4. Exit
 
-                    if (originalURL != null) {
-                        System.out.println("Redirecting to: " + originalURL);
-                    } else {
-                        System.out.println("URL not found!");
-                    }
-                    break;
+Enter your choice:
+```
 
-                case 3:
-                    System.out.println("\nStored URLs:");
-                    for (Map.Entry<String, String> entry : urlDatabase.entrySet()) {
-                        System.out.println(
-                                "http://short.ly/" + entry.getKey()
-                                        + " --> "
-                                        + entry.getValue()
-                        );
-                    }
-                    break;
+---
 
-                case 4:
-                    System.out.println("Exiting...");
-                    sc.close();
-                    System.exit(0);
+## 🔍 How It Works
 
-                default:
-                    System.out.println("Invalid choice!");
-            }
-        }
-    }
-}
+### 1. URL Shortening
+
+The user enters a long URL:
+
+```
+https://www.example.com/my-long-web-page
+```
+
+The system generates a unique short code:
+
+```
+aB92xK
+```
+
+The generated short URL becomes:
+
+```
+http://short.ly/aB92xK
+```
+
+---
+
+### 2. URL Redirection
+
+The user enters the short code:
+
+```
+aB92xK
+```
+
+The system searches the stored database and returns:
+
+```
+Redirecting to:
+https://www.example.com/my-long-web-page
+```
+
+---
+
+## 🧱 Core Components
+
+### URL Database
+
+The application uses:
+
+```java
+HashMap<String, String>
+```
+
+to store:
+
+```
+Short Code → Original URL
+```
+
+Example:
+
+```
+aB92xK → https://example.com
+```
+
+---
+
+### Short Code Generator
+
+The application generates random 6-character codes using:
+
+- Lowercase letters
+- Uppercase letters
+- Numbers
+
+Example:
+
+```
+xY7pQ2
+```
+
+---
+
+## 📊 Data Structures Used
+
+| Data Structure | Purpose |
+|---------------|---------|
+| HashMap | Stores URL mappings |
+| StringBuilder | Creates short codes |
+| Random | Generates unique codes |
+
+---
+
+## 💻 Sample Output
+
+```
+===== URL Shortener Service =====
+
+1. Shorten URL
+2. Redirect to Original URL
+3. Show All URLs
+4. Exit
+
+Enter your choice: 1
+
+Enter Long URL:
+https://github.com/example/project
+
+Short URL:
+http://short.ly/A8kP92
+```
+
+---
+
+## 🧠 OOP & Java Concepts Used
+
+- Classes and Objects
+- Static Methods
+- Encapsulation
+- Collections Framework
+- Exception Handling
+- Loop Control
+- User Input Handling
+
+---
+
+## 🔮 Future Enhancements
+
+- 🌐 Real Web-Based Redirection
+- 💾 Database Storage (MySQL/MongoDB)
+- 👤 User Accounts
+- 📊 URL Click Analytics
+- ⏳ URL Expiration
+- 🔒 Custom Short Links
+- 📱 REST API Integration
+- ☁️ Cloud Deployment
+
+---
+
+## ⚠️ Current Limitations
+
+- URLs are stored only in memory.
+- Data is lost after program termination.
+- Short URLs work only inside the application.
+- No actual browser redirection server is implemented.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository.
+2. Create a new branch.
+3. Make your changes.
+4. Commit your changes.
+5. Push your branch.
+6. Open a Pull Request.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+## 👨‍💻 Author
+
+**MADHVEDNRA PANDEY**
+ 
